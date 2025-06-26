@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Al-Qur\'an Digital</string>
+    <string name="list_surah">Daftar Surah</string>
+    <string name="number_of_ayat">Jumlah Ayat: %d</string>
+    <string name="loading">Memuat...</string>
+    <string name="error_message">Gagal memuat data. Silakan coba lagi.</string>
+    <string name="surah_name_format">%1$s (%2$s)</string>
+</resources>

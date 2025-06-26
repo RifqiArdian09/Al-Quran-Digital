@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.AlQuran" parent="Theme.AppCompat.Light.NoActionBar">
+
+    <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:textColor">@color/normal_text</item>
+    </style>
+</resources>
