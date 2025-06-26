@@ -3,11 +3,15 @@ package com.example.alquran.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,11 +44,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set toolbar sebagai action bar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         recyclerView = findViewById(R.id.rvSurah);
         progressBar = findViewById(R.id.progressBar);
 
         setupRecyclerView();
         getAllSurah();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Cari surah...");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                surahAdapter.filter(newText);
+                return true;
+            }
+        });
+
+        return true;
     }
 
     private void setupRecyclerView() {
@@ -70,18 +102,12 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<SurahResponse> call, Response<SurahResponse> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
-                    try {
-                        Surah[] data = response.body().getData();
-                        Log.d(TAG, "Jumlah surah diterima: " + data.length);
-                        surahList.clear();
-                        surahList.addAll(Arrays.asList(data));
-                        surahAdapter.notifyDataSetChanged();
-                    } catch (Exception e) {
-                        Log.e(TAG, "Kesalahan saat parsing data: ", e);
-                        showError();
-                    }
+                    Surah[] data = response.body().getData();
+                    Log.d(TAG, "Jumlah surah diterima: " + data.length);
+                    surahList.clear();
+                    surahList.addAll(Arrays.asList(data));
+                    surahAdapter.updateList(surahList);
                 } else {
-                    Log.e(TAG, "Gagal: " + response.code() + " - " + response.message());
                     showError();
                 }
             }
@@ -96,6 +122,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showError() {
-        Toast.makeText(this, R.string.error_message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Gagal memuat data", Toast.LENGTH_SHORT).show();
     }
 }

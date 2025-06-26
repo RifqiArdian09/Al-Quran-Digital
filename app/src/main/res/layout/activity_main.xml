@@ -6,23 +6,18 @@
     android:background="@color/background"
     tools:context=".activities.MainActivity">
 
+    <!-- Toolbar dengan title dan menu -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/primary"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:title="@string/list_surah"
+        android:titleTextColor="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/list_surah"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </androidx.appcompat.widget.Toolbar>
-
+    <!-- Daftar Surah -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSurah"
         android:layout_width="match_parent"
@@ -30,6 +25,7 @@
         android:layout_below="@id/toolbar"
         android:padding="8dp" />
 
+    <!-- Progress bar saat loading -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"

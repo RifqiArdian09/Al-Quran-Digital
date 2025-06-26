@@ -12,22 +12,51 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.alquran.R;
 import com.example.alquran.models.Surah;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
 
     private Context context;
     private List<Surah> surahList;
+    private List<Surah> surahListFull;
     private OnItemClickListener listener;
 
     public SurahAdapter(Context context, List<Surah> surahList, OnItemClickListener listener) {
         this.context = context;
-        this.surahList = surahList;
+        this.surahList = new ArrayList<>(surahList);
+        this.surahListFull = new ArrayList<>(surahList);
         this.listener = listener;
     }
 
     public interface OnItemClickListener {
         void onItemClick(Surah surah);
+    }
+
+    public void updateList(List<Surah> newList) {
+        surahList.clear();
+        surahList.addAll(newList);
+        surahListFull.clear();
+        surahListFull.addAll(newList);
+        notifyDataSetChanged();
+    }
+
+    public void filter(String text) {
+        surahList.clear();
+        if (text.isEmpty()) {
+            surahList.addAll(surahListFull);
+        } else {
+            text = text.toLowerCase().trim();
+            for (Surah surah : surahListFull) {
+                if (surah.getEnglishName().toLowerCase().contains(text) ||
+                        surah.getName().toLowerCase().contains(text) ||
+                        surah.getEnglishNameTranslation().toLowerCase().contains(text) ||
+                        String.valueOf(surah.getNumber()).contains(text)) {
+                    surahList.add(surah);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -49,7 +78,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         return surahList.size();
     }
 
-    class SurahViewHolder extends RecyclerView.ViewHolder {
+    static class SurahViewHolder extends RecyclerView.ViewHolder {
         TextView tvNumber, tvSurahName, tvTranslation, tvNumberOfAyahs;
 
         SurahViewHolder(@NonNull View itemView) {
@@ -62,11 +91,9 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
         void bind(Surah surah) {
             tvNumber.setText(String.valueOf(surah.getNumber()));
-            tvSurahName.setText(context.getString(R.string.surah_name_format,
-                    surah.getEnglishName(), surah.getName()));
+            tvSurahName.setText(String.format("%s (%s)", surah.getEnglishName(), surah.getName()));
             tvTranslation.setText(surah.getEnglishNameTranslation());
-            tvNumberOfAyahs.setText(context.getString(R.string.number_of_ayat,
-                    surah.getNumberOfAyahs()));
+            tvNumberOfAyahs.setText(String.format("Jumlah Ayat: %d", surah.getNumberOfAyahs()));
         }
     }
 }
