@@ -18,14 +18,11 @@ Aplikasi Android untuk membaca dan mencari surah dalam Al-Qur'an secara digital.
 - RecyclerView
 - AppCompat Toolbar & SearchView
 
-## 🖼️ Screenshot
-
-| Daftar Surah | Detail Surah | Fitur Pencarian |
-|--------------|--------------|-----------------|
-| ![surah list](screenshots/surah_list.png) | ![surah detail](screenshots/surah_detail.png) | ![search](screenshots/search.png) |
 
 ## ⚙️ Cara Menjalankan
 
 1. Clone repositori:
    ```bash
    git clone https://github.com/username/alquran-digital.git
+2. Buka di Android Studio.
+3. Jalankan di emulator / perangkat Android minimal SDK 24.
